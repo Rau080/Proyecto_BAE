@@ -1,2 +1,2 @@
 # Proyecto_BAE
-Proyecto de base de dato
+Proyecto de base de datos
