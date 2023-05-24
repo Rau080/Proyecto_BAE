@@ -1,0 +1,2 @@
+# Diagrama Normalizada
+![Diagrama Normalizada]()

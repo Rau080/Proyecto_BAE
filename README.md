@@ -1,7 +1,7 @@
 # Proyecto_BAE
 Proyecto de base de datos
 
-[Diagrama entidad relación](/Diagrama_ER)<br>
-[Diagrama Modelo Relacional](/Diagrama_MR)<br>
-[Diagrama Normalización](/Normalización)<br>
-[SQL](/MY_SQL)<br>
+[Diagrama Entidad relación](/ER/README.md)<br>
+[Diagrama Modelo Relacional](/MR/README.md)<br>
+[Diagrama Normalización](/Normalización/README.md)<br>
+[SQL](/SQL/README.md)<br>

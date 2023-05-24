@@ -1,0 +1,1 @@
+![Diagrama de entidad relación](ER.drawio.png)
