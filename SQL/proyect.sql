@@ -427,3 +427,24 @@ select * from publicacion;
 |             19 |          19 | Reciente 19 |
 |             20 |          20 | Reciente 20 |
 +----------------+-------------+-------------+
+
+
+DROP PROCEDURE IF EXISTS InsertarRegistroPersona;
+
+DELIMITER //
+
+CREATE PROCEDURE InsertarRegistroPersona(
+  IN p_id INT,
+  IN p_nombre VARCHAR(50),
+  IN p_apellido VARCHAR(50),
+  IN p_nacimiento DATE
+)
+BEGIN
+  INSERT INTO persona (id, nombre, apellido, nacimiento)
+  VALUES (p_id, p_nombre, p_apellido, p_nacimiento);
+END //
+
+DELIMITER ;
+
+CALL InsertarRegistroPersona(1, 'John', 'Doe', '2000-01-01');
+
