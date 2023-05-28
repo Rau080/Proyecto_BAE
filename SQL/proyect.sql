@@ -1,3 +1,22 @@
+DROP TABLE IF EXISTS creador;
+DROP TABLE IF EXISTS persona;
+
+CREATE TABLE persona (
+  id INT PRIMARY KEY,
+  nombre VARCHAR(50),
+  apellido VARCHAR(50),
+  nacimiento DATE
+);
+
+CREATE TABLE creador (
+  id INT PRIMARY KEY,
+  id_persona INT,
+  genero VARCHAR(10),
+  FOREIGN KEY (id_persona) REFERENCES persona(id)
+);
+
+
+
 mysql> select * from persona;
 +----+-------------+-----------+------------+
 | id | nombre      | apellido  | nacimiento |
@@ -50,6 +69,14 @@ mysql> select * from creador ;
 | 19 |         19 | Masculino |
 | 20 |         20 | Femenino  |
 +----+------------+-----------+select * from usuario;
+
+
+CREATE TABLE usuario (
+  id INT PRIMARY KEY,
+  id_Persona INT,
+  FOREIGN KEY (id_Persona) REFERENCES persona(id)
+);
+
 select * from usuario;
 +----+------------+
 | id | id_Persona |
@@ -76,6 +103,15 @@ select * from usuario;
 | 20 |         20 |
 +----+------------+
 |
+
+CREATE TABLE tiene (
+  subscripcion INT,
+  usuario INT,
+  PRIMARY KEY (subscripcion, usuario),
+  FOREIGN KEY (usuario) REFERENCES usuario(id)
+);
+
+
 mysql> select * from tiene;
 +--------------+---------+
 | subscripcion | usuario |
@@ -103,6 +139,11 @@ mysql> select * from tiene;
 +--------------+---------+
 20 rows in set (0,00 sec)
 
+CREATE TABLE consume (
+  usuario INT PRIMARY KEY,
+  contenido VARCHAR(50),
+  FOREIGN KEY (usuario) REFERENCES usuario(id)
+);
 
 select * from consume;
 +---------+--------------+
@@ -130,6 +171,10 @@ select * from consume;
 |      20 | Contenido 20 |
 +---------+--------------+
 
+CREATE TABLE subcripcion (
+  id_subcripcion INT PRIMARY KEY,
+  FOREIGN KEY (id_subcripcion) REFERENCES tiene(PK)
+);
 
 select * from subcripcion;
 +----------------+
@@ -157,6 +202,12 @@ select * from subcripcion;
 |             20 |
 +----------------+
 
+
+CREATE TABLE contenido (
+  id_contenido INT PRIMARY KEY,
+  visualizaciones INT
+);
+
 select * from contenido ;
 +--------------+-----------------+
 | id_contenido | visualizaciones |
@@ -182,6 +233,12 @@ select * from contenido ;
 |           19 |              17 |
 |           20 |               1 |
 +--------------+-----------------+
+
+CREATE TABLE post (
+  id_post INT PRIMARY KEY,
+  id_persona INT,
+  FOREIGN KEY (id_persona) REFERENCES contenido(id_contenido)
+);
 
 mysql> select * from post;
 +---------+------------+
@@ -210,6 +267,13 @@ mysql> select * from post;
 +---------+------------+
 20 rows in set (0,00 sec)
 
+
+CREATE TABLE clips (
+  id_clips INT PRIMARY KEY,
+  id_persona INT,
+  FOREIGN KEY (id_persona) REFERENCES contenido(id_contenido)
+);
+
  select * from clips;
 +----------+------------+
 | id_clips | id_persona |
@@ -237,6 +301,12 @@ mysql> select * from post;
 +----------+------------+
 20 rows in set (0,00 sec)
 
+
+CREATE TABLE video (
+  id_video INT PRIMARY KEY,
+  id_persona INT,
+  FOREIGN KEY (id_persona) REFERENCES contenido(id_contenido)
+);
 select * from video;
 +----------+------------+
 | id_video | id_persona |
@@ -263,6 +333,12 @@ select * from video;
 |       20 |         20 |
 +----------+------------+
 
+
+CREATE TABLE guarda (
+  favorito INT PRIMARY KEY,
+  contenido INT,
+  FOREIGN KEY (contenido) REFERENCES contenido(id_contenido)
+);
 select * from guarda;
 +----------+-----------+
 | favorito | contenido |
@@ -291,6 +367,11 @@ select * from guarda;
 20 rows in set (0,01 sec)
 
 
+CREATE TABLE favorito (
+  id_favorito INT,
+  FOREIGN KEY (id_favorito) REFERENCES guarda(favorito)
+);
+
 select * from favorito ;
 +-------------+
 | id_favorito |
@@ -317,6 +398,13 @@ select * from favorito ;
 |          20 |
 +-------------+
 20 rows in set (0,00 sec)
+
+
+CREATE TABLE produce (
+  perfil INT PRIMARY KEY,
+  contenido INT,
+  FOREIGN KEY (contenido) REFERENCES contenido(id_contenido)
+);
 
 select * from produce ;
 +--------+-----------+
@@ -345,6 +433,10 @@ select * from produce ;
 +--------+-----------+
 20 rows in set (0,00 sec)
 
+CREATE TABLE perfil (
+  id_perfil INT PRIMARY KEY,
+  FOREIGN KEY (id_perfil) REFERENCES produce(perfil)
+);
 
 select * from perfil;
 +-----------+
@@ -372,6 +464,12 @@ select * from perfil;
 |        20 |
 +-----------+
 20 rows in set (0,00 sec)
+
+CREATE TABLE hacer (
+  publicacion INT PRIMARY KEY,
+  perfil INT,
+  FOREIGN KEY (perfil) REFERENCES perfil(id_perfil)
+);
 
 
  select * from hacer;
@@ -401,6 +499,13 @@ select * from perfil;
 +-------------+--------+
 20 rows in set (0,00 sec)
 
+
+CREATE TABLE publicacion (
+  id_publicacion INT PRIMARY KEY,
+  publicacion INT,
+  reciente VARCHAR(50),
+  FOREIGN KEY (publicacion) REFERENCES hacer(publicacion)
+);
 
 select * from publicacion;
 +----------------+-------------+-------------+
