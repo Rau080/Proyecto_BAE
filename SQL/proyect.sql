@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS creador;
 DROP TABLE IF EXISTS persona;
 
+
+
 CREATE TABLE persona (
   id INT PRIMARY KEY,
   nombre VARCHAR(50),
@@ -8,12 +10,60 @@ CREATE TABLE persona (
   nacimiento DATE
 );
 
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS insertar_registros //
+
+CREATE PROCEDURE insertar_registros()
+BEGIN
+    DECLARE contador INT DEFAULT 1;
+
+    WHILE contador <= 100 DO
+        INSERT INTO persona (id, nombre, apellido, nacimiento)
+        VALUES (contador, CONCAT('Nombre', contador), CONCAT('Apellido', contador), CURDATE() - INTERVAL FLOOR(RAND() * 365) DAY);
+        SET contador = contador + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+
+CREATE INDEX idx_nombre ON persona(nombre);
+
+
+
 CREATE TABLE creador (
   id INT PRIMARY KEY,
   id_persona INT,
   genero VARCHAR(10),
   FOREIGN KEY (id_persona) REFERENCES persona(id)
 );
+
+CREATE INDEX idx_nombre_apellido ON persona(nombre, apellido);
+
+
+DELIMITER //
+CREATE TRIGGER after_insert_persona
+AFTER INSERT ON persona
+FOR EACH ROW
+BEGIN
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Se ha insertado una nueva persona con ID: ', NEW.id);
+    SELECT mensaje;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER after_insert_creador
+AFTER INSERT ON creador
+FOR EACH ROW
+BEGIN
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Se ha insertado un nuevo creador con ID: ', NEW.id);
+    SELECT mensaje;
+END //
+DELIMITER ;
+
 
 
 
@@ -43,6 +93,10 @@ mysql> select * from persona;
 | 20 | Victoria    | King      | 1996-12-06 |
 +----+-------------+-----------+------------+
 20 rows in set (0,00 sec)
+
+
+CREATE INDEX idx_id_persona ON creador(id_persona);
+
 
 mysql> select * from creador ;
 +----+------------+-----------+
@@ -76,6 +130,21 @@ CREATE TABLE usuario (
   id_Persona INT,
   FOREIGN KEY (id_Persona) REFERENCES persona(id)
 );
+
+CREATE INDEX idx_id_Persona ON usuario(id_Persona);
+
+
+DELIMITER //
+CREATE TRIGGER after_insert_usuario
+AFTER INSERT ON usuario
+FOR EACH ROW
+BEGIN
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Se ha insertado un nuevo usuario con ID: ', NEW.id);
+    SELECT mensaje;
+END //
+DELIMITER ;
+
 
 select * from usuario;
 +----+------------+
@@ -112,6 +181,13 @@ CREATE TABLE tiene (
 );
 
 
+CREATE VIEW vista_tiene AS
+SELECT t.subscripcion, t.usuario, u.id_Persona
+FROM tiene t
+INNER JOIN usuario u ON t.usuario = u.id;
+
+
+
 mysql> select * from tiene;
 +--------------+---------+
 | subscripcion | usuario |
@@ -145,6 +221,13 @@ CREATE TABLE consume (
   FOREIGN KEY (usuario) REFERENCES usuario(id)
 );
 
+
+CREATE VIEW vista_consume AS
+SELECT c.usuario, c.contenido, u.id_Persona
+FROM consume c
+INNER JOIN usuario u ON c.usuario = u.id;
+
+
 select * from consume;
 +---------+--------------+
 | usuario | contenido    |
@@ -167,7 +250,10 @@ select * from consume;
 |      16 | Contenido 16 |
 |      17 | Contenido 17 |
 |      18 | Contenido 18 |
-|      19 | Contenido 19 |
+|      19 | Contenido 19 |CREATE TABLE contenido (
+  id_contenido INT PRIMARY KEY,
+  visualizaciones INT
+);
 |      20 | Contenido 20 |
 +---------+--------------+
 
@@ -208,6 +294,11 @@ CREATE TABLE contenido (
   visualizaciones INT
 );
 
+CREATE VIEW vista_contenido AS
+SELECT id_contenido, visualizaciones
+FROM contenido;
+
+
 select * from contenido ;
 +--------------+-----------------+
 | id_contenido | visualizaciones |
@@ -228,7 +319,10 @@ select * from contenido ;
 |           14 |              16 |
 |           15 |               4 |
 |           16 |              13 |
-|           17 |               2 |
+|           17 |               2 |CREATE TABLE contenido (
+  id_contenido INT PRIMARY KEY,
+  visualizaciones INT
+);
 |           18 |              19 |
 |           19 |              17 |
 |           20 |               1 |
