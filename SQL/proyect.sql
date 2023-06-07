@@ -1,6 +1,27 @@
 DROP TABLE IF EXISTS creador;
 DROP TABLE IF EXISTS persona;
 
+DROP PROCEDURE IF EXISTS InsertarRegistroPersona;
+
+
+DELIMITER //
+
+CREATE PROCEDURE InsertarRegistroPersona(
+  IN p_id INT,
+  IN p_nombre VARCHAR(50),
+  IN p_apellido VARCHAR(50),
+  IN p_nacimiento DATE
+)
+BEGIN
+  INSERT INTO persona (id, nombre, apellido, nacimiento)
+  VALUES (p_id, p_nombre, p_apellido, p_nacimiento);
+END //
+
+DELIMITER ;
+
+CALL InsertarRegistroPersona(1, 'John', 'Doe', '2000-01-01');
+
+
 CREATE TABLE persona (
   id INT PRIMARY KEY,
   nombre VARCHAR(50),
@@ -31,7 +52,7 @@ INSERT INTO persona VALUES (20, 'Victoria', 'Fernández', 1996-12-06)
 
 
 mysql> select * from persona;
-+----+-------------+-----------+------------+
+
 | id | nombre      | apellido  | nacimiento |
 +----+-------------+-----------+------------+
 |  1 | John        | Pacheco   | 1990-01-01 |
@@ -87,7 +108,7 @@ INSERT INTO creador VALUES (20, 20, 'Femenino')
 
 
 mysql> select * from creador ;
-+----+------------+-----------+
+
 | id | id_persona | genero    |
 +----+------------+-----------+
 |  1 |          1 | Masculino |
@@ -194,7 +215,7 @@ INSERT INTO tiene VALUES (19, 19)
 INSERT INTO tiene VALUES (20, 20)
 
 mysql> select * from tiene;
-+--------------+---------+
+
 | subscripcion | usuario |
 +--------------+---------+
 |            1 |       1 |
@@ -217,7 +238,7 @@ mysql> select * from tiene;
 |           18 |      18 |
 |           19 |      19 |
 |           20 |      20 |
-+--------------+---------+
+
 20 rows in set (0,00 sec)
 
 CREATE TABLE consume (
@@ -248,7 +269,7 @@ INSERT INTO consume VALUES (19, 'contenido 19')
 INSERT INTO consume VALUES (20, 'contenido 20')
 
 select * from consume;
-+---------+--------------+
+
 | usuario | contenido    |
 +---------+--------------+
 |       1 | Contenido 1  |
@@ -299,7 +320,7 @@ INSERT INTO contenido VALUES (19, 17)
 INSERT INTO contenido VALUES (20, 1)
 
 select * from contenido ;
-+--------------+-----------------+
+
 | id_contenido | visualizaciones |
 +--------------+-----------------+
 |            1 |              10 |
@@ -322,7 +343,7 @@ select * from contenido ;
 |           18 |              19 |
 |           19 |              17 |
 |           20 |               1 |
-+--------------+-----------------+
+
 
 CREATE TABLE guarda (
   favorito INT PRIMARY KEY,
@@ -352,7 +373,7 @@ INSERT INTO guarda VALUES (19, 19)
 INSERT INTO guarda VALUES (20, 20)
 
 select * from guarda;
-+----------+-----------+
+
 | favorito | contenido |
 +----------+-----------+
 |        1 |         1 |
@@ -375,7 +396,7 @@ select * from guarda;
 |       18 |        18 |
 |       19 |        19 |
 |       20 |        20 |
-+----------+-----------+
+
 20 rows in set (0,01 sec)
 
 CREATE TABLE subcripcion (
@@ -405,7 +426,7 @@ INSERT INTO subcripcion VALUES (19)
 INSERT INTO subcripcion VALUES (20)
 
 select * from subcripcion;
-+----------------+
+
 | id_subcripcion |
 +----------------+
 |              1 |
@@ -428,7 +449,7 @@ select * from subcripcion;
 |             18 |
 |             19 |
 |             20 |
-+----------------+
+
 
 CREATE TABLE post (
   id_post INT PRIMARY KEY,
@@ -458,7 +479,7 @@ INSERT INTO post VALUES (19, 19)
 INSERT INTO post VALUES (20, 20)
 
 mysql> select * from post;
-+---------+------------+
+
 | id_post | id_persona |
 +---------+------------+
 |       1 |          1 |
@@ -481,7 +502,7 @@ mysql> select * from post;
 |      18 |         18 |
 |      19 |         19 |
 |      20 |         20 |
-+---------+------------+
+
 20 rows in set (0,00 sec)
 
 CREATE TABLE clips (
@@ -512,7 +533,7 @@ INSERT INTO clips VALUES (19, 19)
 INSERT INTO clips VALUES (20, 20)
 
  select * from clips;
-+----------+------------+
+
 | id_clips | id_persona |
 +----------+------------+
 |        1 |          1 |
@@ -535,7 +556,7 @@ INSERT INTO clips VALUES (20, 20)
 |       18 |         18 |
 |       19 |         19 |
 |       20 |         20 |
-+----------+------------+
+
 20 rows in set (0,00 sec)
 
 
@@ -567,7 +588,7 @@ INSERT INTO video VALUES (19, 19)
 INSERT INTO video VALUES (20, 20)
 
 select * from video;
-+----------+------------+
+
 | id_video | id_persona |
 +----------+------------+
 |        1 |          1 |
@@ -590,7 +611,6 @@ select * from video;
 |       18 |         18 |
 |       19 |         19 |
 |       20 |         20 |
-+----------+------------+
 
 CREATE TABLE favorito (
   id_favorito INT,
@@ -619,7 +639,7 @@ INSERT INTO subcripcion VALUES (19)
 INSERT INTO subcripcion VALUES (20)
 
 select * from favorito ;
-+-------------+
+
 | id_favorito |
 +-------------+
 |           1 |
@@ -642,7 +662,7 @@ select * from favorito ;
 |          18 |
 |          19 |
 |          20 |
-+-------------+
+
 20 rows in set (0,00 sec)
 
 
@@ -674,7 +694,7 @@ INSERT INTO produce VALUES (19, 19)
 INSERT INTO produce VALUES (20, 20)
 
 select * from produce;
-+--------+-----------+
+
 | perfil | contenido |
 +--------+-----------+
 |      1 |         1 |
@@ -697,7 +717,7 @@ select * from produce;
 |     18 |        18 |
 |     19 |        19 |
 |     20 |        20 |
-+--------+-----------+
+
 20 rows in set (0,00 sec)
 
 CREATE TABLE perfil (
@@ -727,7 +747,7 @@ INSERT INTO perfil VALUES (19)
 INSERT INTO perfil VALUES (20)
 
 select * from perfil;
-+-----------+
+
 | id_perfil |
 +-----------+
 |         1 |
@@ -750,7 +770,7 @@ select * from perfil;
 |        18 |
 |        19 |
 |        20 |
-+-----------+
+
 20 rows in set (0,00 sec)
 
 CREATE TABLE hacer (
@@ -781,7 +801,7 @@ INSERT INTO hacer VALUES (19, 19)
 INSERT INTO hacer VALUES (20, 20)
 
 select * from hacer;
-+-------------+--------+
+
 | publicacion | perfil |
 +-------------+--------+
 |           1 |      1 |
@@ -804,7 +824,7 @@ select * from hacer;
 |          18 |     18 |
 |          19 |     19 |
 |          20 |     20 |
-+-------------+--------+
+
 20 rows in set (0,00 sec)
 
 
@@ -837,7 +857,7 @@ INSERT INTO publicacion VALUES (19, 19, 'Reciente 19')
 INSERT INTO publicacion VALUES (20, 20, 'Reciente 20')
 
 select * from publicacion;
-+----------------+-------------+-------------+
+
 | id_publicacion | publicacion | reciente    |
 +----------------+-------------+-------------+
 |              1 |           1 | Reciente 1  |
@@ -885,48 +905,9 @@ CREATE INDEX idx_nombre ON persona(nombre);
 
 CREATE INDEX idx_nombre_apellido ON persona(nombre, apellido);
 
-
-DELIMITER //
-CREATE TRIGGER after_insert_persona
-AFTER INSERT ON persona
-FOR EACH ROW
-BEGIN
-    DECLARE mensaje VARCHAR(255);
-    SET mensaje = CONCAT('Se ha insertado una nueva persona con ID: ', NEW.id);
-    SELECT mensaje;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE TRIGGER after_insert_creador
-AFTER INSERT ON creador
-FOR EACH ROW
-BEGIN
-    DECLARE mensaje VARCHAR(255);
-    SET mensaje = CONCAT('Se ha insertado un nuevo creador con ID: ', NEW.id);
-    SELECT mensaje;
-END //
-DELIMITER ;
-
-
 CREATE INDEX idx_id_persona ON creador(id_persona);
 
-
-
 CREATE INDEX idx_id_Persona ON usuario(id_Persona);
-
-
-DELIMITER //
-CREATE TRIGGER after_insert_usuario
-AFTER INSERT ON usuario
-FOR EACH ROW
-BEGIN
-    DECLARE mensaje VARCHAR(255);
-    SET mensaje = CONCAT('Se ha insertado un nuevo usuario con ID: ', NEW.id);
-    SELECT mensaje;
-END //
-DELIMITER ;
 
 
 CREATE VIEW vista_tiene AS
@@ -945,23 +926,36 @@ CREATE VIEW vista_contenido AS
 SELECT id_contenido, visualizaciones
 FROM contenido;
 
-DROP PROCEDURE IF EXISTS InsertarRegistroPersona;
-
 
 DELIMITER //
-
-CREATE PROCEDURE InsertarRegistroPersona(
-  IN p_id INT,
-  IN p_nombre VARCHAR(50),
-  IN p_apellido VARCHAR(50),
-  IN p_nacimiento DATE
-)
+CREATE TRIGGER after_insert_persona
+AFTER INSERT ON persona
+FOR EACH ROW
 BEGIN
-  INSERT INTO persona (id, nombre, apellido, nacimiento)
-  VALUES (p_id, p_nombre, p_apellido, p_nacimiento);
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Se ha insertado una nueva persona con ID: ', NEW.id);
+    SELECT mensaje;
 END //
-
 DELIMITER ;
 
-CALL InsertarRegistroPersona(1, 'John', 'Doe', '2000-01-01');
+DELIMITER //
+CREATE TRIGGER after_insert_creador
+AFTER INSERT ON creador
+FOR EACH ROW
+BEGIN
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Se ha insertado un nuevo creador con ID: ', NEW.id);
+    SELECT mensaje;
+END //
+DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER after_insert_usuario
+AFTER INSERT ON usuario
+FOR EACH ROW
+BEGIN
+    DECLARE mensaje VARCHAR(255);
+    SET mensaje = CONCAT('Se ha insertado un nuevo usuario con ID: ', NEW.id);
+    SELECT mensaje;
+END //
+DELIMITER ;
