@@ -909,6 +909,24 @@ CREATE INDEX idx_id_persona ON creador(id_persona);
 
 CREATE INDEX idx_id_Persona ON usuario(id_Persona);
 
+CREATE INDEX persona_index ON persona(nombre);
+
+CREATE UNIQUE INDEX index_contenido ON contenido(visualizaciones);
+
+CREATE UNIQUE INDEX index_produce ON produce(contenido);
+
+CREATE INDEX persona_publicacion ON publicacion(reciente);
+
+ALTER TABLE perfil  ADD PRIMARY KEY(id_perfil)
+
+CREATE UNIQUE INDEX index_video ON contenido(id_persona);
+
+ALTER TABLE post  ADD PRIMARY KEY(id_post)
+
+CREATE UNIQUE INDEX index_consume ON consume(contenido);
+
+CREATE UNIQUE INDEX index_creador ON creador(genero);
+
 
 CREATE VIEW vista_tiene AS
 SELECT t.subscripcion, t.usuario, u.id_Persona
